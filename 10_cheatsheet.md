@@ -27,17 +27,32 @@ Modify resource
 kubectl patch $TYPE $NAME --path $JSON_PATH
 
 Get resource info
-kubectl get pods|services|deployments
-kubectl describe pods|services|deployments
+kubectl get pods|services|deployments|secrets
+kubectl describe pods|services|deployments|secrets
 
 Get logs
-kubectl logs
+kubectl logs $POD_NAME
+
+Execute command on container in a pod
+kubectl exec $POD_NAME $COMMAND
 
 
 Minikube
+
+Create kubectl context
+minikube start
 
 Open exposed application
 minikube service $APP_NAME
 
 Get adress of exposed application
 minikube service $APP_NAME --url
+
+
+Docker
+
+Point your docker client to the VM's docker daemon
+eval $(minikube docker-env)
+
+Build docker image
+docker build -t $NAME $FILE_PATH
