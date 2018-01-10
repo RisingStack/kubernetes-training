@@ -2,7 +2,10 @@ const express = require('express')
 const app = express()
 
 let healthy = true
-setTimeout(() => { healthy = false }, process.env.SHOULD_FAIL_WITHIN)
+
+if(process.env.SHOULD_FAIL_WITHIN) {
+  setTimeout(() => { healthy = false }, process.env.SHOULD_FAIL_WITHIN)
+}
 
 app.get('/', (req, res) => res.send('Hello World!'))
 app.get('/healthz', (req, res) => {
