@@ -16,17 +16,29 @@ spec:
       - name: training
         image: training:v1
         imagePullPolicy: IfNotPresent
+        readinessProbe:
+          httpGet:
+            path: /healthz
+            port: 3000
+          initialDelaySeconds: 2
+          periodSeconds: 2
+          failureThreshold: 2
+          successThreshold: 1 # default
+          timeoutSeconds: 1 # default
         livenessProbe:
           httpGet:
             path: /healthz
             port: 3000
-          initialDelaySeconds: 30
-          timeoutSeconds: 1
+          initialDelaySeconds: 5
+          periodSeconds: 10
+          failureThreshold: 3 # default
+          successThreshold: 1 # default
+          timeoutSeconds: 1 # default
         ports:
         - containerPort: 3000
         env:
         - name: SHOULD_FAIL_WITHIN
-          value: "5000"
+          value: "300000"
         - name: REDIS_URI
           valueFrom:
             secretKeyRef:
