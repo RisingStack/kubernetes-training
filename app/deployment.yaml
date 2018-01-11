@@ -24,3 +24,17 @@ spec:
           timeoutSeconds: 1
         ports:
         - containerPort: 3000
+        env:
+        - name: SHOULD_FAIL_WITHIN
+          value: "5000"
+        - name: REDIS_URI
+          valueFrom:
+            secretKeyRef:
+              name: training-secrets
+              key: redis
+        volumeMounts:
+        - mountPath: /data
+          name: data
+      volumes:
+      - name: data
+        emptyDir: {}
