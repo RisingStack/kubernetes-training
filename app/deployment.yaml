@@ -38,12 +38,18 @@ spec:
         - containerPort: 3000
         env:
         - name: SHOULD_FAIL_WITHIN
-          value: "300000"
+          value: "30000"
         - name: REDIS_URI
           valueFrom:
             secretKeyRef:
               name: training-secrets
               key: redis
+        volumeMounts:
+        - mountPath: /data
+          name: data
+      - name: logging-agent
+        image: busybox
+        args: [/bin/sh, -c, 'tail -f /data/training.log']
         volumeMounts:
         - mountPath: /data
           name: data

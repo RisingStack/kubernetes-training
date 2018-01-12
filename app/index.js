@@ -1,3 +1,4 @@
+const fs = require('fs')
 const express = require('express')
 const app = express()
 
@@ -7,12 +8,14 @@ const state = {
   isShutdown: false,
   healthy: true
 }
-console.log(process.pid)
+
+fs.appendFileSync('/data/training.log','PROCESS ' + process.pid + ' started: ' + new Date().toISOString() + '\n')
 if(process.env.SHOULD_FAIL_WITHIN) {
   setTimeout(() => { state.healthy = false }, process.env.SHOULD_FAIL_WITHIN)
 }
 
 process.on('SIGTERM', () => { 
+  fs.appendFileSync('/data/training.log','SIGTERM received: ' + new Date().toISOString() + '\n')
   state.isShutdown = true
   setTimeout( function gracefulShutdown () {
     server.close()
