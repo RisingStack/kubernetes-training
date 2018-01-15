@@ -1,0 +1,14 @@
+apiVersion: autoscaling/v1
+kind: HorizontalPodAutoscaler
+metadata:
+  annotations:
+  name: training-hpa
+  namespace: default
+spec:
+  maxReplicas: 5
+  minReplicas: 1
+  scaleTargetRef:
+    apiVersion: apps/v1beta1
+    kind: Deployment
+    name: training-deployment
+  targetCPUUtilizationPercentage: 10

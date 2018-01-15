@@ -1,0 +1,38 @@
+### app ###
+npm i
+npm start
+
+### docker ###
+minikube start
+eval $(minikube docker-env)
+docker build -t training:v1 .
+
+### secret ###
+kubectl create -f ./secret.yaml
+kubectl get secrets
+
+### deployment ###
+kubectl create -f ./deployment.yaml
+kubectl get deployments
+kubectl get pods
+
+### service ###
+kubectl create -f ./service.yaml
+kubectl get services
+minikube service training-service
+
+### sidecar-logging-agent ###
+kubectl get pods
+kubectl logs training-deployment-xxxxxxx logging-agent
+
+### hpa ###
+minikube addons enable heapster
+minikube addons list
+(minikube addons open heapster)
+kubectl create -f ./hpa.yaml
+# wait a couple of minutes until you see TARGETS 0%/50% on the next command
+kubectl get hpa
+kubectl run -i --tty load-generator --image=busybox /bin/sh
+  while true; do wget -q -O- http://http://192.168.99.100:30001/; done
+# wait a couple of minutes
+kubectl get hpa

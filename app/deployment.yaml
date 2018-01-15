@@ -36,9 +36,14 @@ spec:
           timeoutSeconds: 1 # default
         ports:
         - containerPort: 3000
+        resources:
+            limits:
+              cpu: "0.5"
+            requests:
+              cpu: "0.25"
         env:
-        - name: SHOULD_FAIL_WITHIN
-          value: "30000"
+        # - name: SHOULD_FAIL_WITHIN
+        #   value: "30000"
         - name: REDIS_URI
           valueFrom:
             secretKeyRef:
@@ -53,6 +58,11 @@ spec:
         volumeMounts:
         - mountPath: /data
           name: data
+        resources:
+          limits:
+            cpu: "0.5"
+          requests:
+            cpu: "0.25"
       volumes:
       - name: data
         emptyDir: {}

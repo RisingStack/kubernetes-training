@@ -8,4 +8,5 @@ spec:
   ports:
   - port: 3000
     protocol: TCP
-  type: NodePort
+    nodePort: 30001
+  type: LoadBalancer
