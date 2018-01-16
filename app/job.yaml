@@ -1,0 +1,21 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: training-job
+spec:
+  template:
+    metadata:
+      name: training-job
+    spec:
+      initContainers:
+      - name: job-1
+        image: busybox
+        command: ['sh', '-c', 'for i in 1 2; do echo "job-1 $i: `date`" && sleep 3s; done;']
+      - name: job-2
+        image: busybox
+        command: ['sh', '-c', 'for i in 1 2 3 4; do echo "job-2 $i: `date`" && sleep 3s; done;']
+      containers:
+      - name: job-done
+        image: busybox
+        command: ['sh', '-c', 'echo "job-1 and job-2 completed"']
+      restartPolicy: Never
