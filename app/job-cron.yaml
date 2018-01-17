@@ -1,0 +1,15 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: training-job-cron
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: training-job-cron
+            image: busybox
+            command: ['sh', '-c', 'date; echo Hello from the Kubernetes cluster']
+          restartPolicy: OnFailure

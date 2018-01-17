@@ -66,3 +66,13 @@ kubectl create -f ./job-parallel-queue.yaml
 jobsArray=($(echo $(kubectl get pods  --show-all --selector=job-name=training-job-parallel --output=jsonpath={.items..metadata.name}) | tr ' ' '\n'))
 kubectl logs ${jobsArray[1]}
 kubectl logs ${jobsArray[2]}0
+
+### cron job ###
+kubectl create -f ./job-cron.yaml
+kubectl get cronjob training-job-cron
+# this will create a cronjob which is going to create a job in every minute
+# if you want to see the logs of a job: get jobs, select one from the cron, find its pod and log it
+# kubectl get jobs
+# pod=$(kubectl get pods -a --selector=job-name=training-job-cron-1516207920 --output=jsonpath={.items..metadata.name})
+# kubectl logs $pod
+kubectl delete cronjob hello
