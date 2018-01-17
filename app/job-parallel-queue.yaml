@@ -1,0 +1,14 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: training-job-parallel
+spec:
+  parallelism: 2
+  template:
+    metadata:
+      name: training-job-parallel
+    spec:
+      containers:
+      - name: job-parallel
+        image: job-worker-training:v1
+      restartPolicy: OnFailure

@@ -51,3 +51,18 @@ kubectl get jobs # SUCCESSFUL -> pod status: Succeeded
 kubectl label node minikube app=logging-node --overwrite
 kubectl create -f ./daemon.yaml
 kubectl get ds
+
+### parallel jobs with queue ###
+kubectl create -f ./redis-pod.yaml
+kubectl create -f ./redis-service.yaml
+kubectl run -i --tty temp --image redis --command "/bin/sh"
+  redis-cli -h redis
+  # create the queue here by pushing task keys to 'job' list
+  rpush job "task1"
+  rpush job "task2"
+  rpush job "task3"
+# build docker file for redis-worker.js (node ./redis-worker.js): job-worker-training:v1
+kubectl create -f ./job-parallel-queue.yaml
+jobsArray=($(echo $(kubectl get pods  --show-all --selector=job-name=training-job-parallel --output=jsonpath={.items..metadata.name}) | tr ' ' '\n'))
+kubectl logs ${jobsArray[1]}
+kubectl logs ${jobsArray[2]}0
