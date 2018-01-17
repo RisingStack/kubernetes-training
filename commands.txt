@@ -29,12 +29,12 @@ kubectl logs $pod logging-agent
 ### hpa ###
 minikube addons enable heapster
 minikube addons list
-(minikube addons open heapster)
+# minikube addons open heapster
 kubectl create -f ./hpa.yaml
 # wait a couple of minutes until you see TARGETS 0%/50% on the next command
 kubectl get hpa
 kubectl run -i --tty load-generator --image=busybox /bin/sh
-  while true; do wget -q -O- http://http://192.168.99.100:30001/; done
+  while true; do wget -q -O- http://192.168.99.100:30001/; done
 # wait a couple of minutes
 kubectl get hpa
 
