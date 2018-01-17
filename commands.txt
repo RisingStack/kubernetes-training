@@ -46,3 +46,8 @@ kubectl logs $job job-1
 kubectl logs $job job-2
 kubectl logs $job job-done
 kubectl get jobs # SUCCESSFUL -> pod status: Succeeded
+
+### daemonset ###
+kubectl label node minikube app=logging-node --overwrite
+kubectl create -f ./daemon.yaml
+kubectl get ds
