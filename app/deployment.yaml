@@ -49,9 +49,14 @@ spec:
             secretKeyRef:
               name: training-secrets
               key: redis
+        envFrom:
+        - configMapRef:
+            name: training-config-production # training-config-staging
         volumeMounts:
         - mountPath: /data
           name: data
+        - mountPath: /etc/config
+          name: config
       - name: logging-agent
         image: busybox
         args: [/bin/sh, -c, 'tail -f /data/training.log']
@@ -66,3 +71,6 @@ spec:
       volumes:
       - name: data
         emptyDir: {}
+      - name: config
+        configMap:
+          name: training-config-volumes

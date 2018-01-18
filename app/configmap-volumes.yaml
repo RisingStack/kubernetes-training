@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: training-config-volumes
+  namespace: default
+data:
+  training.type: kubernetes
+  training.time: 2 day

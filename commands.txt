@@ -76,3 +76,14 @@ kubectl get cronjob training-job-cron
 # pod=$(kubectl get pods -a --selector=job-name=training-job-cron-1516207920 --output=jsonpath={.items..metadata.name})
 # kubectl logs $pod
 kubectl delete cronjob hello
+
+### configmap ###
+kubectl create -f ./configmap-production.yaml
+kubectl create -f ./configmap-staging.yaml
+kubectl create -f ./configmap-volumes.yaml
+kubectl create -f ./deployment.yaml
+kubectl get configmaps
+pod=$(kubectl get pods  --show-all --selector=app=training --output=jsonpath={.items..metadata.name})
+kubectl exec -it $pod -c training /bin/sh
+  cat /etc/config/training.type
+  echo $NODE_ENV

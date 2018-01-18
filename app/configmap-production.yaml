@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: training-config-production
+  namespace: default
+data:
+  NODE_ENV: production
+  MONGO_URI: mongodb://34.225.152.246:27017/training
