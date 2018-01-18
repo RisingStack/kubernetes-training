@@ -87,3 +87,15 @@ pod=$(kubectl get pods  --show-all --selector=app=training --output=jsonpath={.i
 kubectl exec -it $pod -c training /bin/sh
   cat /etc/config/training.type
   echo $NODE_ENV
+
+### statefulset ###
+# terminal 1
+kubectl get pods -w -l app=training-statefulset
+# terminal 2
+kubectl create -f ./statefulset.yaml
+kubectl get statefulset training-statefulset
+for i in 0 1; do kubectl exec training-statefulset-$i -- sh -c 'echo $(hostname) > /usr/share/nginx/html/index.html'; done
+for i in 0 1; do kubectl exec -it training-statefulset-$i -- curl localhost; done
+minikube service training-statefulset-service
+kubectl delete statefulset training-statefulset
+  # deletes statefulset and pods, use --cascade=false to keep pods

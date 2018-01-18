@@ -1,0 +1,46 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: training-statefulset-service
+  labels:
+    app: training-statefulset
+spec:
+  ports:
+  - port: 80
+    protocol: TCP
+    nodePort: 30008
+  type: LoadBalancer
+  selector:
+    app: training-statefulset
+---
+apiVersion: apps/v1beta1
+kind: StatefulSet
+metadata:
+  name: training-statefulset
+spec:
+  serviceName: "training-statefulset-service"
+  replicas: 2
+  selector:
+    matchLabels:
+      app: training-statefulset
+  template:
+    metadata:
+      labels:
+        app: training-statefulset
+    spec:
+      containers:
+      - name: nginx
+        image: k8s.gcr.io/nginx-slim:0.8
+        ports:
+        - containerPort: 80
+        volumeMounts:
+        - name: www
+          mountPath: /usr/share/nginx/html
+  volumeClaimTemplates:
+  - metadata:
+      name: www
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      resources:
+        requests:
+          storage: 1Gi
