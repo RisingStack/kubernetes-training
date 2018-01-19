@@ -1,0 +1,11 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: training-service-cluster
+spec:
+  selector:
+    app: training
+  ports:
+  - port: 3000
+    protocol: TCP
+  type: ClusterIP

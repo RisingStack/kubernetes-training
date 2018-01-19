@@ -99,3 +99,11 @@ for i in 0 1; do kubectl exec -it training-statefulset-$i -- curl localhost; don
 minikube service training-statefulset-service
 kubectl delete statefulset training-statefulset
   # deletes statefulset and pods, use --cascade=false to keep pods
+
+### ingress ###
+minikube addons enable ingress
+minikube addons list
+kubectl create -f ./service-ingress.yaml # only cluster can access it
+kubectl create -f ./ingress.yaml
+echo "$(minikube ip) risingstack.training.kubernetes.com" | sudo tee -a /etc/hosts
+# visit risingstack.training.kubernetes.com
