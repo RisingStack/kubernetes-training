@@ -107,3 +107,20 @@ kubectl create -f ./service-ingress.yaml # only cluster can access it
 kubectl create -f ./ingress.yaml
 echo "$(minikube ip) risingstack.training.kubernetes.com" | sudo tee -a /etc/hosts
 # visit risingstack.training.kubernetes.com
+
+### helm ###
+# OSX
+  brew install kubernetes-helm
+# LINUX
+  curl https://raw.githubusercontent.com/kubernetes/helm/master/scripts/get > get_helm.sh
+  chmod 700 get_helm.sh
+  ./get_helm.sh
+helm init
+kubectl get pods --namespace kube-system
+helm version
+helm create training-chart
+helm package training-chart
+helm install training-chart --version 0.1.0
+export POD_NAME=$(kubectl get pods --namespace default -l "app=training-chart,release=plucking-butterfly" -o jsonpath="{.items[0].metadata.name}")
+kubectl port-forward $POD_NAME 8080:80
+# http://127.0.0.1:8080
