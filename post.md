@@ -1,9 +1,11 @@
+http://blog.christianposta.com/istio-workshop/slides/#/agenda
+
 # Intro
 - microservices architecture shifts complexity from the space of code design and implementation into system operations
 - pushing the complexity from one place (software design and development) to another (operations) is just like hiding some tricky parts in somewhere else
 - k8s lets you to automate things and solve the problems easily
 
-![alt text](https://martinfowler.com/bliki/images/microservicePrerequisites/sketch.png "MS meme by Martin Fowler")
+!["MS meme by Martin Fowler"](https://martinfowler.com/bliki/images/microservicePrerequisites/sketch.png)
 
 # Problems
 
@@ -19,7 +21,8 @@
 - canary
 
 ### Bootstrapping
-- graceful start / shutdown
+- graceful start / shutdown (app skeleton)
+- automate setup (repo, ci, deployment)
 
 ## Communication
 
@@ -41,5 +44,7 @@
 - loosely-coupled services collaborating
 - detect serious problems
 
-envoy
-- caching server + client? invalidate manually?
+### Fault injection
+- test resilience of your application
+- network latency -> delay
+- crash failure -> abort
