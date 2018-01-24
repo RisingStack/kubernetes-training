@@ -5,6 +5,7 @@ metadata:
   labels:
     run: github
 spec:
+  type: NodePort
   ports:
   - port: 5000
     protocol: TCP
