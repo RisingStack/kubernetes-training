@@ -1,6 +1,8 @@
 const request = require('request-promise-native')
 const express = require('express')
 const app = express()
+const cors = require('cors')
+app.use(cors())
 
 const PORT = process.env.PORT
 

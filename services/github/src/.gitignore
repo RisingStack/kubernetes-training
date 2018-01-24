@@ -1,9 +1,0 @@
-# Logs
-logs
-*.log
-
-# Dependency directory
-node_modules
-
-# Misc
-.env
