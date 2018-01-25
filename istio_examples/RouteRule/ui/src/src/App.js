@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 
+const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000'
+
 class App extends Component {
   constructor(props) {
     super(props)
@@ -9,7 +11,7 @@ class App extends Component {
   }
 
   callAPI(header) {
-    fetch(`http://192.168.99.100:30010/api`, { 
+    fetch(`${API_URL}/api`, {
       method: 'get',
       headers: header
     })

@@ -19,3 +19,6 @@ spec:
         image: k8s/ui:v1
         ports:
         - containerPort: 3000
+        env:
+        - name: REACT_APP_API_URL
+          value: 'sample-url'
