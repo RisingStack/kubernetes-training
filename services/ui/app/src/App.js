@@ -9,15 +9,12 @@ class App extends Component {
   }
 
   callAPI(endpoint) {
-    console.log(endpoint)
     fetch(`http://localhost:5000/${endpoint}`, { 
       method: 'get'
     })
       .then((response) => {
-        console.log(response)
         if (response.ok) {
           response.json().then(json => {
-            console.log(json)
             this.setState({data: json})
           })
         }
