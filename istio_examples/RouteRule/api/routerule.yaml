@@ -1,0 +1,30 @@
+# every request with Version: v2 header to api service will be sent to "v2" instance
+# all remaning will be sent to "v1"
+apiVersion: config.istio.io/v1alpha2
+kind: RouteRule
+metadata:
+  name: api-v2
+spec:
+  destination:
+    name: api
+  precedence: 2
+  match:
+    request:
+      headers:
+        version: v2
+  route:
+  - labels:
+      version: v2
+---
+apiVersion: config.istio.io/v1alpha2
+kind: RouteRule
+metadata:
+  name: api-default
+spec:
+  destination:
+    name: api
+  precedence: 1
+  route:
+  - labels:
+      version: v1
+    weight: 100

@@ -1,0 +1,12 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: api
+spec:
+  selector:
+    app: api
+  type: NodePort
+  ports:
+  - protocol: TCP
+    port: 5000
+    nodePort: 30010

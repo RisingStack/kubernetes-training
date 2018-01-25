@@ -1,0 +1,24 @@
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: api-v1
+  labels:
+    app: api
+    version: v1
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: api
+        version: v1
+      name: api-v1
+    spec:
+      containers:
+      - name: api
+        image: k8s/api:v1
+        ports:
+        - containerPort: 5000
+        env:
+        - name: VERSION
+          value: "v1"
