@@ -5,7 +5,7 @@
   "main": "server.js",
   "scripts": {
     "start": "docker run -p 5000:5000 k8s/github:v1",
-    "build": "docker build -t k8s/github:v1 ."
+    "dockerize": "docker build -t k8s/github:v1 ."
   },
   "author": "",
   "license": "ISC",

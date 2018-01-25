@@ -19,3 +19,8 @@ spec:
         image: k8s/api:v1
         ports:
         - containerPort: 5000
+        env:
+        - name: POD_NAMESPACE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
