@@ -124,3 +124,14 @@ helm install training-chart --version 0.1.0
 export POD_NAME=$(kubectl get pods --namespace default -l "app=training-chart,release=plucking-butterfly" -o jsonpath="{.items[0].metadata.name}")
 kubectl port-forward $POD_NAME 8080:80
 # http://127.0.0.1:8080
+
+### istio ###
+curl -L https://git.io/getLatestIstio | sh -
+cd istio-0.4.0
+# temporary istioctl export (if you are using zsh, edit .zshrc to inculde permanent export)
+  export PATH=$PWD/bin:$PATH
+kubectl apply -f install/kubernetes/istio.yaml
+kubectl get svc -n istio-system
+kubectl get pods -n istio-system
+# deploy app
+  kubectl create -f <(istioctl kube-inject -f <your-app-spec>.yaml)
