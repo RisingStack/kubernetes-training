@@ -4,6 +4,8 @@ apiVersion: config.istio.io/v1alpha2
 kind: RouteRule
 metadata:
   name: api-v2
+  labels:
+    app: api
 spec:
   destination:
     name: api
@@ -20,6 +22,8 @@ apiVersion: config.istio.io/v1alpha2
 kind: RouteRule
 metadata:
   name: api-default
+  labels:
+    app: api
 spec:
   destination:
     name: api

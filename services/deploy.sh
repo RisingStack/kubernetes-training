@@ -6,7 +6,7 @@ SERVICE_NAMES=("ui" "api" "github")
 
 for SERVICE_NAME in "${SERVICE_NAMES[@]}"; do
   cd $DIR/$SERVICE_NAME/src && npm i && npm run dockerize
-  kubectl delete service,deployment $SERVICE_NAME
+  kubectl delete service,deployment -l app=$SERVICE_NAME
   kubectl create -f ../deployment.yml
   kubectl create -f ../service.yml
 done
