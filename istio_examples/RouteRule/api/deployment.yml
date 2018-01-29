@@ -1,10 +1,9 @@
-apiVersion: apps/v1beta1
+apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
   name: api-v1
   labels:
     app: api
-    version: v1
 spec:
   replicas: 1
   template:
@@ -12,7 +11,6 @@ spec:
       labels:
         app: api
         version: v1
-      name: api-v1
     spec:
       containers:
       - name: api
@@ -23,13 +21,12 @@ spec:
         - name: VERSION
           value: "v1"
 ---
-apiVersion: apps/v1beta1
+apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
   name: api-v2
   labels:
     app: api
-    version: v2
 spec:
   replicas: 1
   template:
@@ -37,7 +34,6 @@ spec:
       labels:
         app: api
         version: v2
-      name: api-v2
     spec:
       containers:
       - name: api
