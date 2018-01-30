@@ -13,3 +13,5 @@ done
 
 API_URL=$(minikube service api --url)
 kubectl patch deployment ui --patch '{"spec": {"template": {"spec": {"containers": [{"name": "ui", "env":[{"name": "REACT_APP_API_URL", "value": "'$API_URL'"}]}]}}}}'
+
+minikube service ui

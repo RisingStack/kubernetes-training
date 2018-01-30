@@ -1,17 +1,18 @@
 apiVersion: config.istio.io/v1alpha2
 kind: RouteRule
 metadata:
-  name: api-default
+  name: api-v2
   labels:
     app: api
 spec:
   destination:
     name: api
-  precedence: 1
+  precedence: 2
+  match:
+    request:
+      headers:
+        version:
+          exact: v2
   route:
   - labels:
-      version: v1
-    weight: 100
-  - labels:
       version: v2
-    weight: 0

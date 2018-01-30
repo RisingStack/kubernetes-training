@@ -29,9 +29,11 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <button onClick={this.callAPIv1}>Call API</button>
-        <button onClick={this.callAPIv2}>Call API with v2 header</button>
-        <div className="data">{this.state.data}</div>
+        <button onClick={this.callAPIv1}>Call API v1</button>
+        <button onClick={this.callAPIv2}>Call API v2</button>
+        <p></p>
+        <div className="data">Requested: <b>{this.state.data.requestedVersion}</b></div>
+        <div className="data">Response: <b>{this.state.data.version}</b></div>
       </div>
     );
   }

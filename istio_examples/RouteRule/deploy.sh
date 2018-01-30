@@ -18,3 +18,5 @@ kubectl patch deployment ui --patch '{"spec": {"template": {"spec": {"containers
 
 kubectl delete routerule -l app=api
 kubectl apply -f <(istioctl kube-inject -f $DIR/api/routerule.yml)
+
+minikube service ui

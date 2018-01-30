@@ -4,6 +4,7 @@ metadata:
   name: api-v1
   labels:
     app: api
+    version: v1
 spec:
   replicas: 1
   template:
@@ -20,6 +21,10 @@ spec:
         env:
         - name: VERSION
           value: "v1"
+        - name: POD_NAMESPACE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
 ---
 apiVersion: extensions/v1beta1
 kind: Deployment
@@ -27,6 +32,7 @@ metadata:
   name: api-v2
   labels:
     app: api
+    version: v2
 spec:
   replicas: 1
   template:
@@ -43,3 +49,7 @@ spec:
         env:
         - name: VERSION
           value: "v2"
+        - name: POD_NAMESPACE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
