@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: api
-        image: k8s/api:v1
+        image: gcr.io/training-193616/api:v1
         ports:
         - containerPort: 5000
         env:
@@ -37,7 +37,7 @@ spec:
     spec:
       containers:
       - name: api
-        image: k8s/api:v1
+        image: gcr.io/training-193616/api:v1
         ports:
         - containerPort: 5000
         env:

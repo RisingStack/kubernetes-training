@@ -13,7 +13,7 @@ spec:
     spec:
       containers:
       - name: ui
-        image: k8s/ui:v1
+        image: gcr.io/training-193616/ui:v1
         ports:
         - containerPort: 3000
         env:
