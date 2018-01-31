@@ -13,6 +13,9 @@ spec:
     spec:
       containers:
       - name: ui
-        image: gcr.io/training-193616/ui:v1
+        image: k8s/ui:v1
         ports:
         - containerPort: 80
+        env:
+        - name: REACT_APP_API_URL
+          value: 'http://risingstack.training.kubernetes.com'

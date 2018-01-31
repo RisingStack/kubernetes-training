@@ -3,12 +3,17 @@ kind: Ingress
 metadata:
   name: gateway
   annotations:
-    kubernetes.io/ingress.class: "istio"
+    ingress.kubernetes.io/rewrite-target: /
 spec:
   rules:
-  - http:
+  - host: risingstack.training.kubernetes.com
+    http:
       paths:
       - path: /api
         backend:
           serviceName: api
           servicePort: 5000
+      - path: /
+        backend:
+          serviceName: ui
+          servicePort: 80

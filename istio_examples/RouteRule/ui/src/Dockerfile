@@ -1,11 +1,29 @@
-FROM node:8.9.4-alpine
+# FROM node:8.9.4-alpine
 
-ENV PORT 3000
+# ENV PORT 3000
 
-COPY package.json package.json
+# COPY package.json package.json
+# RUN npm install
+
+# COPY . .
+
+# EXPOSE $PORT
+# CMD ["npm", "start"]
+
+#########################
+
+FROM node:8.9.4-alpine as build-deps
+
+WORKDIR /usr/src/app
+
+COPY package.json package.json ./
 RUN npm install
 
 COPY . .
 
-EXPOSE $PORT
-CMD ["npm", "start"]
+RUN ["npm", "run" ,"build"]
+
+FROM nginx:1.12-alpine
+COPY --from=build-deps /usr/src/app/build /usr/share/nginx/html
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]
