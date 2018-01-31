@@ -13,7 +13,16 @@ for SERVICE_NAME in "${SERVICE_NAMES[@]}"; do
   kubectl apply -f <(istioctl kube-inject -f ../service.yml)
 done
 
-API_URL=$(kubectl get svc api -o jsonpath='{.status.loadBalancer.ingress[0].ip}':5000)
+kubectl delete ingress gateway
+kubectl apply -f <(istioctl kube-inject -f $DIR/api/ingress.yml)
+
+INGRESS_IP=""
+while [ -z $INGRESS_IP ]; do
+    sleep 10
+    INGRESS_IP=$(kubectl get ingress gateway -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
+done
+
+API_URL="http://$INGRESS_IP"
 kubectl patch deployment ui --patch '{"spec": {"template": {"spec": {"containers": [{"name": "ui", "env":[{"name": "REACT_APP_API_URL", "value": "'$API_URL'"}]}]}}}}'
 
 kubectl delete routerule -l app=api
