@@ -3,7 +3,10 @@ import React, { Component } from 'react';
 class App extends Component {
   constructor(props) {
     super(props)
-    this.state = {data: ''}
+    this.state = {
+      data: '',
+      error: false
+    }
     this.callAPIv1 = this.callAPI.bind(this, {'version': 'v1'})
     this.callAPIv2 = this.callAPI.bind(this, {'version': 'v2'})
   }
@@ -14,14 +17,12 @@ class App extends Component {
       headers: header
     })
       .then((response) => {
-        if (response.ok) {
-          response.json().then(json => {
-            console.log(json)
-            this.setState({data: json})
-          })
-        }
+        response.json().then(json => {
+          console.log(json)
+          this.setState({error: false, data: json})
+        })
       })
-      .catch((err) => this.setState({data: `Fetching error: ${err}`}))
+      .catch((err) => this.setState({error: true, data: err.toString()}))
   }
 
   render() {
@@ -30,11 +31,13 @@ class App extends Component {
         <button onClick={this.callAPIv1}>Call API v1</button>
         <button onClick={this.callAPIv2}>Call API v2</button>
         <p></p>
-        <div className="data">Requested: <b>{this.state.data.requestedVersion}</b></div>
-        <div className="data">Response: <b>{this.state.data.version}</b></div>
+        {!this.state.error 
+          ? [<div key='req'>Requested: <b>{this.state.data.requestedVersion}</b></div>,
+            <div key='res'>Response: <b>{this.state.data.version}</b></div>]
+          : <div className="error">Error: <b>{this.state.data}</b></div> }
       </div>
-    );
+    )
   }
 }
 
-export default App;
+export default App
