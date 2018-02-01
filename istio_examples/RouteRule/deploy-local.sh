@@ -3,7 +3,7 @@
 # RUN these command once before deploy
 # minikube start
 # eval $(minikube docker-env)
-# echo "$(minikube ip) risingstack.training.kubernetes.com" | sudo tee -a /etc/hosts
+# echo "$(minikube ip) risingstack.training.example.com" | sudo tee -a /etc/hosts
 
 DIR=$(pwd)
 

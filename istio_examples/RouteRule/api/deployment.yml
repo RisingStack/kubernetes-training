@@ -22,10 +22,6 @@ spec:
         env:
         - name: VERSION
           value: "v1"
-        - name: POD_NAMESPACE
-          valueFrom:
-            fieldRef:
-              fieldPath: metadata.namespace
 ---
 apiVersion: extensions/v1beta1
 kind: Deployment
@@ -51,7 +47,3 @@ spec:
         env:
         - name: VERSION
           value: "v2"
-        - name: POD_NAMESPACE
-          valueFrom:
-            fieldRef:
-              fieldPath: metadata.namespace

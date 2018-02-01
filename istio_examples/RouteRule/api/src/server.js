@@ -13,10 +13,3 @@ app.get('/api', (req, res) => res.json({
 }))
 
 app.listen(PORT, () => console.log(`Example app listening on port ${PORT}!`))
-
-// TODO: remove this part
-setInterval(() => {
-  require('request')(`http://api.default.svc.cluster.local/api`, (error, response, body) => {
-    console.log(error || body)
-  })
-}, 1000)
