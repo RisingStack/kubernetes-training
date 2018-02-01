@@ -15,6 +15,7 @@ spec:
     spec:
       containers:
       - name: api
+        imagePullPolicy: Always
         image: gcr.io/training-193616/api:v1
         ports:
         - containerPort: 5000
@@ -43,6 +44,7 @@ spec:
     spec:
       containers:
       - name: api
+        imagePullPolicy: Always
         image: gcr.io/training-193616/api:v1
         ports:
         - containerPort: 5000

@@ -13,6 +13,7 @@ spec:
     spec:
       containers:
       - name: ui
+        imagePullPolicy: Always
         image: gcr.io/training-193616/ui:v1
         ports:
         - containerPort: 80

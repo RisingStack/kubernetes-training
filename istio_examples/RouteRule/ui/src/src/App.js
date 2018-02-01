@@ -9,7 +9,7 @@ class App extends Component {
   }
 
   callAPI(header) {
-    fetch(window.location.href + `/api`, {
+    fetch('api', {
       method: 'get',
       headers: header
     })
