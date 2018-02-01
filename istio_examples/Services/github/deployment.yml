@@ -1,0 +1,19 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: github
+  labels:
+    app: github
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: github
+    spec:
+      containers:
+      - name: github
+        imagePullPolicy: Always
+        image: gcr.io/training-193616/github:v1
+        ports:
+        - containerPort: 5000

@@ -2,7 +2,7 @@
 
 DIR=$(pwd)
 
-SERVICE_NAMES=("ui" "api")
+SERVICE_NAMES=("ui" "api" "github")
 
 for SERVICE_NAME in "${SERVICE_NAMES[@]}"; do
   cd $DIR/$SERVICE_NAME/src
