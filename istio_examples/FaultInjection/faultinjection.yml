@@ -1,0 +1,17 @@
+apiVersion: config.istio.io/v1alpha2
+kind: RouteRule
+metadata:
+  name: github-abort
+  labels:
+    app: github
+spec:
+  destination:
+    name: github
+  route:
+  - labels:
+      app: github
+  httpFault:
+    abort:
+      percent: 100
+      httpStatus: 400
+  precedence: 1

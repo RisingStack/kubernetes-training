@@ -19,10 +19,14 @@ class App extends Component {
       headers
     })
       .then((response) => {
-        response.json().then(json => {
-          console.log(json)
-          this.setState({error: false, data: json})
-        })
+        if (response.ok) {
+          response.json().then(json => {
+            console.log(json)
+            this.setState({error: false, data: json})
+          })
+        } else {
+          throw new Error('Network response was not ok.')
+        }
       })
       .catch((err) => this.setState({error: true, data: err.toString()}))
   }
