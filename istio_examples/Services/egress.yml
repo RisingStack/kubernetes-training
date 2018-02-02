@@ -1,0 +1,14 @@
+apiVersion: config.istio.io/v1alpha2
+kind: EgressRule
+metadata:
+  name: github-egress
+  label:
+    app: github
+spec:
+  destination:
+    service: "*.github.com"
+  ports:
+    - port: 443
+      protocol: https
+    - port: 80
+      protocol: http

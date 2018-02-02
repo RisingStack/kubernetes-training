@@ -37,7 +37,7 @@ class App extends Component {
         <button onClick={this.callAPIgit}>Call API git</button>
         <p></p>
         {!this.state.error 
-          ? _.map(data, (value, key) => {return(<div key={key}>{key}: <b>{value}</b></div>)})
+          ? _.map(data, (value, key) => {return(<div key={key}>{key}: <b>{value.toString()}</b></div>)})
           : <div className="error">Error: <b>{this.state.data}</b></div>
         }
       </div>

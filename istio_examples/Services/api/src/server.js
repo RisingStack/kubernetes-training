@@ -13,12 +13,16 @@ app.get('/api', (req, res) => res.json({
   version: VERSION
 }))
 app.get('/api/git', async (req, res) => {
-  console.log('sending request: http://github.default.svc.cluster.local:5000/api/v1')
-  const response = await request({
-    method: 'GET',
-    uri: `http://github.default.svc.cluster.local:5000/api/v1`
-  })
-  res.json(response)
+  try {
+    const response = await request({
+      method: 'GET',
+      uri: `http://github.default.svc.cluster.local:5000/api/v1`
+    })
+    return res.json(JSON.parse(response))
+  } catch (err) {
+    console.log(err)
+    return res.sendStatus(500)
+  }
 })
 
 app.listen(PORT, () => console.log(`Example app listening on port ${PORT}!`))
