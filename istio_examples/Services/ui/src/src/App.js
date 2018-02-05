@@ -10,7 +10,9 @@ class App extends Component {
     }
     this.callAPIv1 = this.callAPI.bind(this, 'api', {'version': 'v1'})
     this.callAPIv2 = this.callAPI.bind(this, 'api', {'version': 'v2'})
-    this.callAPIgit = this.callAPI.bind(this, 'api/git', {'version': 'v1'})
+    this.callAPIgit = this.callAPI.bind(this, '/api/git/repo', {'version': 'v1'})
+    this.callAPIgitv1 = this.callAPI.bind(this, '/api/git', {'version': 'v1'})
+    this.callAPIgitv2 = this.callAPI.bind(this, '/api/git', {'version': 'v2'})
   }
 
   callAPI(endpoint, headers) {
@@ -36,9 +38,11 @@ class App extends Component {
 
     return (
       <div className="App">
-        <button onClick={this.callAPIv1}>Call API v1</button>
-        <button onClick={this.callAPIv2}>Call API v2</button>
-        <button onClick={this.callAPIgit}>Call API git</button>
+        <button onClick={this.callAPIv1}>Call /api (v1)</button>
+        <button onClick={this.callAPIv2}>Call /api (v2)</button>
+        <button onClick={this.callAPIgitv1}>Call /api/git (v1)</button>
+        <button onClick={this.callAPIgitv2}>Call /api/git (v2)</button>
+        <button onClick={this.callAPIgit}>Call /api/git/repo (v1)</button>
         <p></p>
         {!this.state.error 
           ? _.map(data, (value, key) => {return(<div key={key}>{key}: <b>{value.toString()}</b></div>)})

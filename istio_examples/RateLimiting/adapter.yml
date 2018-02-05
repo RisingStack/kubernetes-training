@@ -1,0 +1,17 @@
+apiVersion: config.istio.io/v1alpha2
+kind: memquota
+metadata:
+  name: handler
+  namespace: istio-system
+spec:
+  quotas:
+  - name: requestcount.quota.istio-system
+    maxAmount: 5000 # default max requests per second
+    validDuration: 1s
+    overrides:
+    - dimensions:
+        destination: github
+        source: api
+        sourceVersion: v2
+      maxAmount: 1 # api v2 can send 1 request to github per seconds
+      validDuration: 1s

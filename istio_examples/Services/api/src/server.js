@@ -12,13 +12,26 @@ app.get('/api', (req, res) => res.json({
   requestedVersion: req.headers.version,
   version: VERSION
 }))
+
 app.get('/api/git', async (req, res) => {
   try {
-    const response = await request({
-      method: 'GET',
-      uri: `http://github.default.svc.cluster.local:5000/api/v1`
-    })
-    return res.json(JSON.parse(response))
+    return res.json(JSON.parse(
+      await request({
+        method: 'GET',
+        uri: `http://github.default.svc.cluster.local:5000/api/hello`
+    })))
+  } catch (err) {
+    console.log(err)
+    return res.sendStatus(500)
+  }
+})
+app.get('/api/git/repo', async (req, res) => {
+  try {
+    return res.json(JSON.parse(
+      await request({
+        method: 'GET',
+        uri: `http://github.default.svc.cluster.local:5000/api/search/repo`
+    })))
   } catch (err) {
     console.log(err)
     return res.sendStatus(500)

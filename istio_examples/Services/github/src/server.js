@@ -8,7 +8,10 @@ app.use(cors())
 const PORT = process.env.PORT
 
 app.get('/healthz', (req, res) => res.sendStatus(200))
-app.get('/api/v1', async (req, res) => {
+app.get('/api/hello', (req, res) => res.json({
+  response: 'Hello world from github service in cluster!'
+}))
+app.get('/api/search/repo', async (req, res) => {
   try {
     const {items} = await request({
       method: 'GET',
