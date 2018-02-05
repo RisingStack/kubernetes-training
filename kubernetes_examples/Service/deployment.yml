@@ -2,6 +2,8 @@ apiVersion: apps/v1beta1
 kind: Deployment
 metadata:
   name: training-deployment
+  labels:
+    app: training
 spec:
   replicas: 1
   selector:

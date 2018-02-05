@@ -1,0 +1,16 @@
+{
+  "name": "kubernetes-training",
+  "version": "1.0.0",
+  "private": true,
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node .",
+    "dockerize": "docker build -t training:v1 .",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "express": "^4.16.2",
+    "redis": "^2.8.0"
+  }
+}

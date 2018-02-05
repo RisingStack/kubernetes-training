@@ -1,12 +1,13 @@
 kind: Service
 apiVersion: v1
 metadata:
-  name: training-service
+  name: training-service-cluster
+  labels:
+    app: training
 spec:
   selector:
     app: training
   ports:
   - port: 3000
     protocol: TCP
-    nodePort: 30001
-  type: LoadBalancer
+  type: ClusterIP

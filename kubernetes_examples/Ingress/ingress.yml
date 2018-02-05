@@ -6,7 +6,7 @@ metadata:
     ingress.kubernetes.io/rewrite-target: /
 spec:
   rules:
-  - host: risingstack.training.kubernetes.com
+  - host: risingstack.training.example.com
     http:
       paths:
       - path: /

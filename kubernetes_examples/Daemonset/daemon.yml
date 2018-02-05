@@ -1,7 +1,9 @@
 apiVersion: extensions/v1beta1
 kind: DaemonSet
 metadata:
-  name: logging
+  name: training-daemonset
+  labels:
+    app: training
 spec:
   template:
     metadata:

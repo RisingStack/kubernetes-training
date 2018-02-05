@@ -1,0 +1,14 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: training-service
+  labels:
+    app: training
+spec:
+  selector:
+    app: training
+  ports:
+  - port: 3000
+    protocol: TCP
+    nodePort: 30010
+  type: LoadBalancer # with minikube, no real external load balancer created

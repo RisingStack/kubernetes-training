@@ -2,44 +2,91 @@
 npm i
 npm start
 
+
 ### docker ###
 minikube start
 eval $(minikube docker-env)
 docker build -t training:v1 .
 
+
 ### secret ###
-kubectl create -f ./secret.yaml
+kubectl create -f ./Secret/secret.yml
 kubectl get secrets
 
+
 ### deployment ###
-kubectl create -f ./deployment.yaml
+kubectl create -f ./Service/deployment.yml
 kubectl get deployments
 kubectl get pods
 
+
 ### service ###
-kubectl create -f ./service.yaml
+kubectl create -f ./Service/service.yml
 kubectl get services
-minikube service training-service
+minikube service training
+
 
 ### sidecar-logging-agent ###
 kubectl get pods
 pod=$(kubectl get pods  --show-all --selector=app=training --output=jsonpath={.items..metadata.name})
 kubectl logs $pod logging-agent
 
+
 ### hpa ###
+# not working on minikube 0.25.0 (kubernetes 1.9.0) command below should work, but I'm struggling (it worked on 0.24.1) 
+  minikube start --extra-config=kubelet.HorizontalPodAutoscalerUseRESTClients=false
 minikube addons enable heapster
-minikube addons list
-# minikube addons open heapster
-kubectl create -f ./hpa.yaml
-# wait a couple of minutes until you see TARGETS 0%/50% on the next command
+kubectl create -f ./Hpa/hpa.yml
+# wait a couple of minutes until you see TARGETS 0%/10% on the next command
 kubectl get hpa
 kubectl run -i --tty load-generator --image=busybox /bin/sh
-  while true; do wget -q -O- http://192.168.99.100:30001/; done
+  while true; do wget -q -O- http://192.168.99.100:30010/; done
 # wait a couple of minutes
 kubectl get hpa
 
+
+### daemonset ###
+kubectl label node minikube app=logging-node --overwrite
+kubectl create -f ./Daemonset/daemon.yml
+kubectl get ds
+
+
+### configmap ###
+kubectl create -f ./Configmap/configmap-production.yml
+kubectl create -f ./Configmap/configmap-staging.yml
+kubectl create -f ./Configmap/configmap-volumes.yml
+kubectl create -f ./Service/deployment.yml
+kubectl get configmaps
+pod=$(kubectl get pods  --show-all --selector=app=training --output=jsonpath={.items..metadata.name})
+kubectl exec -it $pod -c training /bin/sh
+  cat /etc/config/training.type
+  echo $NODE_ENV
+
+
+### ingress ###
+minikube addons enable ingress
+minikube addons list
+kubectl create -f ./Ingress/service-ingress.yml # only cluster can access it
+kubectl create -f ./Ingress/ingress.yml
+echo "$(minikube ip) risingstack.training.example.com" | sudo tee -a /etc/hosts
+# visit risingstack.training.kubernetes.com
+
+
+### statefulset ###
+# terminal 1
+kubectl get pods -w -l app=training-statefulset
+# terminal 2
+kubectl create -f ./Statefulset/statefulset.yml
+kubectl get statefulset training-statefulset
+for i in 0 1; do kubectl exec training-statefulset-$i -- sh -c 'echo $(hostname) > /usr/share/nginx/html/index.html'; done
+for i in 0 1; do kubectl exec -it training-statefulset-$i -- curl localhost; done
+minikube service training-statefulset-service
+kubectl delete statefulset training-statefulset --cascade=false
+kubectl delete pods training-statefulset-0 training-statefulset-1
+
+
 ### jobs ###
-kubectl create -f ./job.yaml
+kubectl create -f ./Jobs/job.yml
 kubectl get jobs
 job=$(kubectl get pods  --show-all --selector=job-name=training-job --output=jsonpath={.items..metadata.name})
 kubectl logs $job job-1
@@ -47,66 +94,35 @@ kubectl logs $job job-2
 kubectl logs $job job-done
 kubectl get jobs # SUCCESSFUL -> pod status: Succeeded
 
-### daemonset ###
-kubectl label node minikube app=logging-node --overwrite
-kubectl create -f ./daemon.yaml
-kubectl get ds
 
 ### parallel jobs with queue ###
-kubectl create -f ./redis-pod.yaml
-kubectl create -f ./redis-service.yaml
+kubectl create -f ./Jobs/redis-pod.yml
+kubectl create -f ./Jobs/redis-service.yml
 kubectl run -i --tty temp --image redis --command "/bin/sh"
   redis-cli -h redis
   # create the queue here by pushing task keys to 'job' list
   rpush job "task1"
   rpush job "task2"
   rpush job "task3"
-# build docker file for redis-worker.js (node ./redis-worker.js): job-worker-training:v1
-kubectl create -f ./job-parallel-queue.yaml
+cd Jobs/redis
+npm run dockerize
+kubectl create -f ./Jobs/job-parallel-queue.yml
 jobsArray=($(echo $(kubectl get pods  --show-all --selector=job-name=training-job-parallel --output=jsonpath={.items..metadata.name}) | tr ' ' '\n'))
 kubectl logs ${jobsArray[1]}
-kubectl logs ${jobsArray[2]}0
+kubectl logs ${jobsArray[2]}
+kubectl delete deployment temp
+
 
 ### cron job ###
-kubectl create -f ./job-cron.yaml
+kubectl create -f ./Jobs/job-cron.yml
 kubectl get cronjob training-job-cron
 # this will create a cronjob which is going to create a job in every minute
 # if you want to see the logs of a job: get jobs, select one from the cron, find its pod and log it
 # kubectl get jobs
 # pod=$(kubectl get pods -a --selector=job-name=training-job-cron-1516207920 --output=jsonpath={.items..metadata.name})
 # kubectl logs $pod
-kubectl delete cronjob hello
+kubectl delete cronjob training-job-cron
 
-### configmap ###
-kubectl create -f ./configmap-production.yaml
-kubectl create -f ./configmap-staging.yaml
-kubectl create -f ./configmap-volumes.yaml
-kubectl create -f ./deployment.yaml
-kubectl get configmaps
-pod=$(kubectl get pods  --show-all --selector=app=training --output=jsonpath={.items..metadata.name})
-kubectl exec -it $pod -c training /bin/sh
-  cat /etc/config/training.type
-  echo $NODE_ENV
-
-### statefulset ###
-# terminal 1
-kubectl get pods -w -l app=training-statefulset
-# terminal 2
-kubectl create -f ./statefulset.yaml
-kubectl get statefulset training-statefulset
-for i in 0 1; do kubectl exec training-statefulset-$i -- sh -c 'echo $(hostname) > /usr/share/nginx/html/index.html'; done
-for i in 0 1; do kubectl exec -it training-statefulset-$i -- curl localhost; done
-minikube service training-statefulset-service
-kubectl delete statefulset training-statefulset
-  # deletes statefulset and pods, use --cascade=false to keep pods
-
-### ingress ###
-minikube addons enable ingress
-minikube addons list
-kubectl create -f ./service-ingress.yaml # only cluster can access it
-kubectl create -f ./ingress.yaml
-echo "$(minikube ip) risingstack.training.kubernetes.com" | sudo tee -a /etc/hosts
-# visit risingstack.training.kubernetes.com
 
 ### helm ###
 # OSX
@@ -125,13 +141,14 @@ export POD_NAME=$(kubectl get pods --namespace default -l "app=training-chart,re
 kubectl port-forward $POD_NAME 8080:80
 # http://127.0.0.1:8080
 
+
 ### istio ###
 curl -L https://git.io/getLatestIstio | sh -
 cd istio-0.4.0
 # temporary istioctl export (if you are using zsh, edit .zshrc to inculde permanent export)
   export PATH=$PWD/bin:$PATH
-kubectl apply -f install/kubernetes/istio.yaml
+kubectl apply -f install/kubernetes/istio.yml
 kubectl get svc -n istio-system
 kubectl get pods -n istio-system
 # deploy app
-  kubectl create -f <(istioctl kube-inject -f <your-app-spec>.yaml)
+  kubectl create -f <(istioctl kube-inject -f <your-app-spec>.yml)
