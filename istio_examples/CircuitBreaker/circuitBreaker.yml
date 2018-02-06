@@ -1,18 +1,13 @@
-apiVersion: config.istio.io/v1beta1
+apiVersion: config.istio.io/v1alpha2
 kind: DestinationPolicy
 metadata:
-  name: api-circuit-breaker
+  name: github-circuit-breaker
 spec:
   destination:
-    name: api
-    labels:
-      version: v1
+    name: github
   circuitBreaker:
     simpleCb:
-      maxConnections: 1
       httpMaxPendingRequests: 1
       sleepWindow: 3m
       httpDetectionInterval: 1s
       httpMaxEjectionPercent: 100
-      httpConsecutiveErrors: 1
-      httpMaxRequestsPerConnection: 1
