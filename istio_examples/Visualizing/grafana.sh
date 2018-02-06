@@ -1,6 +1,6 @@
 #!/bin/bash
 
-kubectl apply -f ~/istio-0.4.0/install/kubernetes/addons/grafana.yaml
+kubectl apply -f $ISTIODIR/install/kubernetes/addons/grafana.yaml
 
 POD_STATUS=""
 while [ "$POD_STATUS" != "Running" ]; do
@@ -14,4 +14,4 @@ echo "Grafana running on: http://localhost:3000/"
 
 ### DELETE ###
 # lsof -c kubectl -ti:3000 -a | xargs kill
-# kubectl delete -f ~/istio-0.4.0/install/kubernetes/addons/grafana.yaml
+# kubectl delete -f $ISTIODIR/install/kubernetes/addons/grafana.yaml

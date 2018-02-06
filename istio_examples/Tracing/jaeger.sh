@@ -1,6 +1,6 @@
 #!/bin/bash
 
-kubectl delete -f ~/istio-0.4.0/install/kubernetes/addons/zipkin.yaml
+kubectl delete -f $ISTIODIR/install/kubernetes/addons/zipkin.yaml
 kubectl apply -n istio-system -f https://raw.githubusercontent.com/jaegertracing/jaeger-kubernetes/master/all-in-one/jaeger-all-in-one-template.yml
 
 POD_STATUS=""

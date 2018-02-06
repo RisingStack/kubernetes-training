@@ -1,6 +1,6 @@
 #!/bin/bash
 
-kubectl apply -f ~/istio-0.4.0/install/kubernetes/addons/zipkin.yaml
+kubectl apply -f $ISTIODIR/install/kubernetes/addons/zipkin.yaml
 
 POD_STATUS=""
 while [ "$POD_STATUS" != "Running" ]; do
@@ -14,4 +14,4 @@ echo "Zipkin running on: http://localhost:9411/"
 
 ### DELETE ###
 # lsof -c kubectl -ti:9411 -a | xargs kill
-# kubectl delete -f ~/istio-0.4.0/install/kubernetes/addons/zipkin.yaml
+# kubectl delete -f $ISTIODIR/install/kubernetes/addons/zipkin.yaml
