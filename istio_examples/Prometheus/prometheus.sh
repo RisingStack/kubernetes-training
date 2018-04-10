@@ -1,6 +1,6 @@
 #!/bin/bash
 
-kubectl apply -f ~/istio-0.4.0/install/kubernetes/addons/prometheus.yaml
+kubectl apply -f $ISTIODIR/install/kubernetes/addons/prometheus.yaml
 
 POD_STATUS=""
 while [ "$POD_STATUS" != "Running" ]; do

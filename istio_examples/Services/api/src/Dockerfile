@@ -7,7 +7,8 @@ RUN apk add wget
 ENV PORT 5000
 
 COPY package.json package.json
-RUN npm install
+# DNS doesn't work in the docker container for some reason, so the npm registry is added to hosts by ip
+RUN echo "151.101.0.162 registry.npmjs.org" >> /etc/hosts && npm install
 
 COPY . .
 

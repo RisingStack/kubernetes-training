@@ -1,17 +1,40 @@
+# Old version with default fallback
+# Not working in istio at the moment (v0.6 - v0.7.1), should be fixed with the 0.8 release
+
+#apiVersion: config.istio.io/v1alpha2
+#kind: RouteRule
+#metadata:
+#  name: api-default
+#  labels:
+#    app: api
+#spec:
+#  destination:
+#    name: api
+#  precedence: 1
+#  route:
+#  - labels:
+#      version: v1
+#    weight: 100
+#  - labels:
+#      version: v2
+#    weight: 0
+
+# Exact matching the v1 as well is a temporary workaround for the issue
 apiVersion: config.istio.io/v1alpha2
 kind: RouteRule
 metadata:
-  name: api-default
+  name: api-v1
   labels:
     app: api
 spec:
   destination:
     name: api
   precedence: 1
+  match:
+    request:
+      headers:
+        version:
+          exact: v1
   route:
   - labels:
       version: v1
-    weight: 100
-  - labels:
-      version: v2
-    weight: 0

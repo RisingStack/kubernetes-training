@@ -22,7 +22,7 @@ app.get('/api/git', async (req, res) => {
     })))
   } catch (err) {
     console.log(err)
-    return res.sendStatus(500)
+    return res.sendStatus(err.statusCode || 500)
   }
 })
 app.get('/api/git/repo', async (req, res) => {
@@ -34,7 +34,7 @@ app.get('/api/git/repo', async (req, res) => {
     })))
   } catch (err) {
     console.log(err)
-    return res.sendStatus(500)
+    return res.sendStatus(err.statusCode || 500)
   }
 })
 

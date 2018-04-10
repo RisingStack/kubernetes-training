@@ -26,7 +26,7 @@ app.get('/api/search/repo', async (req, res) => {
     return res.json(_.pickBy(items[0], _.identity))
   } catch (err) {
     console.log(err)
-    return res.sendStatus(500)
+    return res.sendStatus(err.statusCode || 500)
   }
 })
 
